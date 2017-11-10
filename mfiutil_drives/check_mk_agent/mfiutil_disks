@@ -41,5 +41,5 @@
 
 if which mfiutil >/dev/null ; then
     echo '<<<mfiutil_disks>>>'
-    mfiutil show drives | grep -v 'Physical Drives:'
+    mfiutil show drives | grep -v 'Physical Drives:' | sed -r 's/\(|\)|>|<//g'
 fi
