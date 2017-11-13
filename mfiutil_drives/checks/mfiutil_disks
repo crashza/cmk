@@ -29,7 +29,7 @@
 # [[u'0', u'(', u'932G)', u'ONLINE', u'<ST1000NM0055-1V4', u'TN02', u'serial=ZBS05Z0Q>', u'SATA', u'E1:S7'], 
 
 def inventory_mfiutil_disks(info):
-    for yield str(line[0]),None
+    yield str(line[0]),None
 
 def check_mfiutil_disks(item, params, info):
     disk_id     = str(item[0])
