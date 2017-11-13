@@ -29,23 +29,25 @@
 # [[u'0', u'(', u'932G)', u'ONLINE', u'<ST1000NM0055-1V4', u'TN02', u'serial=ZBS05Z0Q>', u'SATA', u'E1:S7'], 
 
 def inventory_mfiutil_disks(info):
-    yield str(line[0]),None
+    yield str(info[0]),None
 
 def check_mfiutil_disks(item, params, info):
-    disk_id     = str(item[0])
-    size        = str(item[1])
-    status      = str(item[2])
-    description = str(item[3])
-    for item in info[4:]:
-        item = str(item)
-        if not item.startswith('serial'):
-            description = description + ' ' + item
-        else:
-            serial = item
-            if status == 'ONLINE'
-                return 0, "OK - %s %s STATUS = %s" %(description,serial,status)
-            else:
-                return 2, "CRIT - %s %s STATUS = %s" %(description,serial,status)
+    for line in info:
+        if line[0] == item:
+            disk_id     = str(info[0])
+            size        = str(info[1])
+            status      = str(info[2])
+            description = str(info[3])
+            for item in line[4:]:
+                item = str(item)
+                if not item.startswith('serial'):
+                    description = description + ' ' + item
+                else:
+                    serial = item
+                    if status == 'ONLINE':
+                        return 0, "OK - %s %s STATUS = %s" %(description,serial,status)
+                    else:
+                        return 2, "CRIT - %s %s STATUS = %s" %(description,serial,status)
 
 check_info["mfiutil_disks"] = {
     'check_function':            check_mfiutil_disks,
