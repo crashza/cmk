@@ -30,7 +30,7 @@
 
 def inventory_mfiutil_disks(info):
     for line in info:
-    yield str(line[0]),None
+        yield str(line[0]),None
 
 def check_mfiutil_disks(item, params, info):
     for line in info:
