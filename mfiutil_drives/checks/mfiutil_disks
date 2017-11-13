@@ -34,10 +34,10 @@ def inventory_mfiutil_disks(info):
 def check_mfiutil_disks(item, params, info):
     for line in info:
         if line[0] == item:
-            disk_id     = str(info[0])
-            size        = str(info[1])
-            status      = str(info[2])
-            description = str(info[3])
+            disk_id     = str(line[0])
+            size        = str(line[1])
+            status      = str(line[2])
+            description = str(line[3])
             for item in line[4:]:
                 item = str(item)
                 if not item.startswith('serial'):
