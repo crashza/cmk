@@ -1,0 +1,54 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+# +------------------------------------------------------------------+
+# |             ____ _               _        __  __ _  __           |
+# |            / ___| |__   ___  ___| | __   |  \/  | |/ /           |
+# |           | |   | '_ \ / _ \/ __| |/ /   | |\/| | ' /            |
+# |           | |___| | | |  __/ (__|   <    | |  | | . \            |
+# |            \____|_| |_|\___|\___|_|\_\___|_|  |_|_|\_\           |
+# |                                                                  |
+# | Copyright Mathias Kettner 2016             mk@mathias-kettner.de |
+# +------------------------------------------------------------------+
+#
+# This file is part of Check_MK.
+# The official homepage is at http://mathias-kettner.de/check_mk.
+#
+# check_mk is free software;  you can redistribute it and/or modify it
+# under the  terms of the  GNU General Public License  as published by
+# the Free Software Foundation in version 2.  check_mk is  distributed
+# in the hope that it will be useful, but WITHOUT ANY WARRANTY;  with-
+# out even the implied warranty of  MERCHANTABILITY  or  FITNESS FOR A
+# PARTICULAR PURPOSE. See the  GNU General Public License for more de-
+# tails. You should have  received  a copy of the  GNU  General Public
+# License along with GNU Make; see the file  COPYING.  If  not,  write
+# to the Free Software Foundation, Inc., 51 Franklin St,  Fifth Floor,
+# Boston, MA 02110-1301 USA.
+
+# Agent Output:
+#
+# [[u'0', u'(', u'932G)', u'ONLINE', u'<ST1000NM0055-1V4', u'TN02', u'serial=ZBS05Z0Q>', u'SATA', u'E1:S7'], 
+
+def inventory_mfiutil_disks(info):
+    for yield str(line[0]),None
+
+def check_mfiutil_disks(item, params, info):
+    disk_id     = str(item[0])
+    size        = str(item[1])
+    status      = str(item[2])
+    description = str(item[3])
+    for item in info[4:]:
+        item = str(item)
+        if not item.startswith('serial'):
+            description = description + ' ' + item
+        else:
+            serial = item
+            if status == 'ONLINE'
+                return 0, "OK - %s %s STATUS = %s" %(description,serial,status)
+            else:
+                return 2, "CRIT - %s %s STATUS = %s" %(description,serial,status)
+
+check_info["mfiutil_disks"] = {
+    'check_function':            check_mfiutil_disks,
+    'inventory_function':        inventory_mfiutil_disks,
+    'service_description':       'RAID pdisk %s',
+}
