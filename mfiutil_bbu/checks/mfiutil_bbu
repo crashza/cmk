@@ -1,0 +1,80 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+# +------------------------------------------------------------------+
+# |             ____ _               _        __  __ _  __           |
+# |            / ___| |__   ___  ___| | __   |  \/  | |/ /           |
+# |           | |   | '_ \ / _ \/ __| |/ /   | |\/| | ' /            |
+# |           | |___| | | |  __/ (__|   <    | |  | | . \            |
+# |            \____|_| |_|\___|\___|_|\_\___|_|  |_|_|\_\           |
+# |                                                                  |
+# | Copyright Mathias Kettner 2016             mk@mathias-kettner.de |
+# +------------------------------------------------------------------+
+#
+# This file is part of Check_MK.
+# The official homepage is at http://mathias-kettner.de/check_mk.
+#
+# check_mk is free software;  you can redistribute it and/or modify it
+# under the  terms of the  GNU General Public License  as published by
+# the Free Software Foundation in version 2.  check_mk is  distributed
+# in the hope that it will be useful, but WITHOUT ANY WARRANTY;  with-
+# out even the implied warranty of  MERCHANTABILITY  or  FITNESS FOR A
+# PARTICULAR PURPOSE. See the  GNU General Public License for more de-
+# tails. You should have  received  a copy of the  GNU  General Public
+# License along with GNU Make; see the file  COPYING.  If  not,  write
+# to the Free Software Foundation, Inc., 51 Franklin St,  Fifth Floor,
+# Boston, MA 02110-1301 USA.
+
+# Agent Output:
+#
+# mfi0: Battery State:
+#     Manufacture Date: 9/28/2016
+#        Serial Number: 1604
+#         Manufacturer: LS1191002A
+#                Model: 3150302
+#            Chemistry: LION
+#      Design Capacity: 1215 mAh
+# Full Charge Capacity: 1231 mAh
+#     Current Capacity: 1145 mAh
+#        Charge Cycles: 7
+#       Current Charge: 93%
+#       Design Voltage: 3700 mV
+#      Current Voltage: 4031 mV
+#          Temperature: 21 C
+#     Autolearn period: 28 days
+#      Next learn time: Tue Sep  5 03:27:11 2017
+# Learn delay interval: 0 hours
+#       Autolearn mode: enabled
+#               Status: normal
+#
+
+
+def inventory_mfiutil_bbu(info):
+    for line in info:
+        if line[0].startswith('mfi'):
+            controller = line[0].replace(":","")
+            yield str(controller),None
+
+def check_mfiutil_bbu(item, params, info):
+    counter = 0
+    for line in info:
+        controller =  str(line[0].replace(":",""))
+        if controller == item:
+            for l in info[counter:]:
+                string1 = str(l[0])
+                string2 = str(l[1])
+                if string1.startswith("Current") and string2.startswith("Charge"):
+                    charge = str(l[2])
+                if string1.startswith("Status"):
+                    status = str(l[1])
+                    if status == 'normal':
+                        return 0, "status: %s charge: %s" %(status,charge)
+                    else:
+                        return 2, "status: %s charge: %s" %(status,charge)
+
+        counter = counter + 1
+
+check_info["mfiutil_bbu"] = {
+    'check_function':            check_mfiutil_bbu,
+    'inventory_function':        inventory_mfiutil_bbu,
+    'service_description':       'RAID battery %s',
+}
