@@ -1,0 +1,7 @@
+#!/bin/sh
+# Author Trevor Steyn <trevor.steyn@is.co.za>
+
+if [ -f /var/broadworks/logs/maintenance/healthmon.txt ]; then
+   echo '<<<broadsoft_healthmon>>>'
+   grep 'Report severity' /var/broadworks/logs/maintenance/healthmon.txt | awk '{print $4}'
+fi

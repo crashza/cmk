@@ -1,0 +1,50 @@
+#!/usr/bin/python
+# -*- encoding: utf-8; py-indent-offset: 4 -*-
+# +------------------------------------------------------------------+
+# |             __                             _           |
+# |            / _| |   _  __| | _   |  \/  | |/ /           |
+# |           | |   | ' \ /  \/ __| |/ /   | |\/| | ' /            |
+# |           | |___| | | |  _/ (_|   <    | |  | | . \            |
+# |            \____|_| |_|\___|\___|_|\_\___|_|  |_|_|\_\           |
+# |                                                                  |
+# | Copyright Mathias Kettner 2014             mk@mathias-kettner.de |
+# +------------------------------------------------------------------+
+#
+# This file is part of Check_MK.
+# The official homepage is at http://mathias-kettner.de/check_mk.
+#
+# check_mk is free software;  you can redistribute it and/or modify it
+# under the  terms of the  GNU General Public License  as published by
+# the Free Software Foundation in version 2.  check_mk is  distributed
+# in the hope that it will be useful, but WITHOUT ANY WARRANTY;  with-
+# out even the implied warranty of  MERCHANTABILITY  or  FITNESS FOR A
+# PARTICULAR PURPOSE. See the  GNU General Public License for more de-
+# tails. You should have  received  a copy of the  GNU  General Public
+# License along with GNU Make; see the file  COPYING.  If  not,  write
+# to the Free Software Foundation, Inc., 51 Franklin St,  Fifth Floor,
+# Boston, MA 02110-1301 USA.
+
+#inventory function (info)
+def inventory_broadsoft_healthmon(info):
+    if info:
+        return [ (None, {}) ]
+
+# the check function (dummy)
+def check_broadsoft_healthmon(item, params, info):
+    status = str(info[0][0])
+    if status == "NOTIFICATION":
+        return 0, "%s" %status
+    elif status == "WARNING":
+                return 1, "%s" %status
+    elif status == "HIGH":
+                return 2, "%s" %status
+    else:
+                return 3, "%s" %status
+
+# declare the check to Check_MK
+check_info["broadsoft_healthmon"] = {
+    'check_function':            check_broadsoft_healthmon,
+    'inventory_function':        inventory_broadsoft_healthmon,
+    'service_description':       'Broadsoft Healthmon',
+
+}
