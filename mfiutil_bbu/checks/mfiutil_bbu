@@ -68,6 +68,11 @@ def check_mfiutil_bbu(item, params, info):
                     status = str(l[1])
                     if status == 'normal':
                         return 0, "status: %s charge: %s" %(status,charge)
+                    elif status == 'CHARGING':
+                        if int(charge) < 40:
+                            return 2, "status: %s charge: %s" %(status,charge) 
+                        else:
+                            return 0, "status: %s charge: %s" %(status,charge)
                     else:
                         return 2, "status: %s charge: %s" %(status,charge)
 
