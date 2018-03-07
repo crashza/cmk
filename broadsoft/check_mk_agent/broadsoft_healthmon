@@ -1,5 +1,5 @@
 #!/bin/sh
-# Author Trevor Steyn <trevor.steyn@is.co.za>
+# Author Trevor Steyn <trevor@webon.co.za>
 
 if [ -f /var/broadworks/logs/maintenance/healthmon.txt ]; then
    echo '<<<broadsoft_healthmon>>>'
