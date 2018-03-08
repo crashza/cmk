@@ -69,7 +69,8 @@ def check_mfiutil_bbu(item, params, info):
                     if status == 'normal':
                         return 0, "status: %s charge: %s" %(status,charge)
                     elif status == 'CHARGING':
-                        if int(charge) < 40:
+                        charged_amount = charge.replace("%","")
+                        if int(charged_amount) < 40:
                             return 2, "status: %s charge: %s" %(status,charge) 
                         else:
                             return 0, "status: %s charge: %s" %(status,charge)
