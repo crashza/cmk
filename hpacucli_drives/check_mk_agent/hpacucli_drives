@@ -27,5 +27,5 @@
 
 if which hpacucli >/dev/null ; then
     echo '<<<hpacucli_disks>>>'
-    hpacucli ctrl all show config detail  | grep Port -A 12 -B 1 --no-group-separator | sed -e "s/\s*//"
+    hpacucli ctrl all show config   | grep physicaldrive | sed -e "s/\s*//"
 fi
