@@ -113,7 +113,9 @@ for customers in customer_list['customers']:
 
 
 print '<<<<' + HOST + '>>>>'
+print '<<<local>>>'
 if not accounts_warning:
     print '0 Credit_Limits - OK -  No Accounts Affected'
 else:
     print '2 Credit_Limits - Critical - %s Accounts above %s%% threshold' %(accounts_warning, CFG_PERC_LIMIT)
+print '<<<<>>>>'
